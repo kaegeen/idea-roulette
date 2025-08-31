@@ -1,0 +1,72 @@
+import React, { useState } from "react";
+
+const categories = {
+  Art: [
+    "Draw a futuristic city in the clouds",
+    "Create a character who can talk to plants",
+    "Design a logo for a time travel agency"
+  ],
+  Writing: [
+    "Write a short story about a world without sleep",
+    "Describe a moment that changed history",
+    "Invent a mythical creature and its origin"
+  ],
+  Startup: [
+    "App that lets people trade skills locally",
+    "AI service that writes daily affirmations",
+    "Platform for renting unused home spaces"
+  ],
+  Challenge: [
+    "Go a whole day without using your phone",
+    "Cook a dish from a random country",
+    "Talk to 3 strangers today"
+  ]
+};
+
+export default function IdeaRoulette() {
+  const [idea, setIdea] = useState("");
+  const [history, setHistory] = useState([]);
+
+  const generateIdea = () => {
+    const cats = Object.keys(categories);
+    const randomCat = cats[Math.floor(Math.random() * cats.length)];
+    const randomIdea =
+      categories[randomCat][
+        Math.floor(Math.random() * categories[randomCat].length)
+      ];
+    setIdea(`${randomCat}: ${randomIdea}`);
+    setHistory((prev) => [...prev, `${randomCat}: ${randomIdea}`]);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center p-6">
+      <h1 className="text-2xl font-bold mb-4">Idea Roulette</h1>
+
+      <button
+        onClick={generateIdea}
+        className="bg-black text-white px-6 py-2 rounded mb-4"
+      >
+        Spin for an Idea
+      </button>
+
+      {idea && (
+        <div className="p-4 bg-white border rounded shadow w-full max-w-md mb-4">
+          <p className="font-semibold">{idea}</p>
+        </div>
+      )}
+
+      {history.length > 0 && (
+        <div className="w-full max-w-md">
+          <h2 className="text-lg font-semibold mb-2">History</h2>
+          <ul className="space-y-1 text-sm">
+            {history.map((h, idx) => (
+              <li key={idx} className="border-b pb-1">
+                {h}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
